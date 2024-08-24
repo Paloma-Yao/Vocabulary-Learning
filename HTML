@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Testing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        #content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .paragraph {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        .feedback {
+            margin-bottom: 20px;
+        }
+        .slider {
+            width: 100%;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>Vocabulary Testing</h1>
+
+        <!-- 段落展示区域 -->
+        <div class="paragraph" id="paragraph">
+            AI生成的段落将在这里显示。
+        </div>
+
+        <!-- 反馈选项 -->
+        <div class="feedback">
+            <h3>请标记你不熟悉的单词：</h3>
+            <label><input type="checkbox" name="word1" value="word1"> Word1</label>
+            <label><input type="checkbox" name="word2" value="word2"> Word2</label>
+            <label><input type="checkbox" name="word3" value="word3"> Word3</label>
+        </div>
+
+        <!-- 难度滑块 -->
+        <div class="feedback">
+            <h3>请给段落的难度打分：</h3>
+            <input type="range" min="1" max="10" value="5" class="slider" id="difficultySlider">
+        </div>
+
+        <!-- 提交按钮 -->
+        <button onclick="submitFeedback()">提交反馈</button>
+    </div>
+
+    <script>
+        function submitFeedback() {
+            // 获取用户选择的难词
+            let selectedWords = [];
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach((checkbox) => {
+                selectedWords.push(checkbox.value);
+            });
+
+            // 获取难度评分
+            let difficulty = document.getElementById("difficultySlider").value;
+
+            // 将数据发送到后端
+            console.log("Selected Words:", selectedWords);
+            console.log("Difficulty Rating:", difficulty);
+
+            // 模拟发送数据到后端
+            alert("反馈已提交！");
+
+            // TODO: 调用API生成下一段内容
+        }
+    </script>
+</body>
+</html>
