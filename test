@@ -56,27 +56,37 @@
     </div>
 
     <script>
-        async function submitFeedback(difficultyLevel) {
-            let paragraphDifficulty = calculateParagraphDifficulty(difficultyLevel);
+        let currentDifficulty = 6;  // 初始难度设为6
 
-            // 调用IBM Watsonx Generative AI API生成段落
-            let generatedParagraph = await callIBMWatsonxAPI(paragraphDifficulty);
+        function submitFeedback(difficultyLevel) {
+            if (difficultyLevel === '适当') {
+                // 进入下一个阶段
+                nextPhase();
+            } else {
+                // 计算段落难度
+                let paragraphDifficulty = calculateParagraphDifficulty(difficultyLevel);
 
-            // 更新段落内容
-            document.getElementById("paragraph").innerText = generatedParagraph;
+                // 调用API生成段落并更新内容
+                callIBMWatsonxAPI(paragraphDifficulty).then(generatedParagraph => {
+                    document.getElementById("paragraph").innerText = generatedParagraph;
+                });
+            }
         }
 
         // 计算段落难度的函数
         function calculateParagraphDifficulty(difficultyLevel) {
-            let currentDifficulty = Math.floor(Math.random() * 9) + 1;  // 生成1到9之间的当前难度
-
             if (difficultyLevel === '简单') {
                 return currentDifficulty * 1.3;
-            } else if (difficultyLevel === '适当') {
-                return currentDifficulty * 1.5;
             } else if (difficultyLevel === '难') {
                 return currentDifficulty * 0.8;
             }
+        }
+
+        // 模拟进入下一个阶段的函数
+        function nextPhase() {
+            // 此处可以添加进入下一个阶段的逻辑
+            alert("进入下一个阶段！");
+            // 你可以在这里跳转到新的页面或执行其他操作
         }
 
         async function callIBMWatsonxAPI(paragraphDifficulty) {
