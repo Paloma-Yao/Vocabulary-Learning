@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Testing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        #content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .paragraph {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        .feedback {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>Vocabulary Testing</h1>
+
+        <!-- 段落展示区域 -->
+        <div class="paragraph" id="paragraph">
+            AI生成的段落将在这里显示。
+        </div>
+
+        <!-- 难度选项 -->
+        <div class="feedback">
+            <h3>请选择段落的难度级别：</h3>
+            <button onclick="submitFeedback('简单')">简单</button>
+            <button onclick="submitFeedback('适当')">适当</button>
+            <button onclick="submitFeedback('难')">难</button>
+        </div>
+    </div>
+
+    <script>
+        async function submitFeedback(difficultyLevel) {
+            let paragraphDifficulty = calculateParagraphDifficulty(difficultyLevel);
+
+            // 调用IBM Watsonx Generative AI API生成段落
+            let generatedParagraph = await callIBMWatsonxAPI(paragraphDifficulty);
+
+            // 更新段落内容
+            document.getElementById("paragraph").innerText = generatedParagraph;
+        }
+
+        // 计算段落难度的函数
+        function calculateParagraphDifficulty(difficultyLevel) {
+            let currentDifficulty = Math.floor(Math.random() * 9) + 1;  // 生成1到9之间的当前难度
+
+            if (difficultyLevel === '简单') {
+                return currentDifficulty * 1.3;
+            } else if (difficultyLevel === '适当') {
+                return currentDifficulty * 1.5;
+            } else if (difficultyLevel === '难') {
+                return currentDifficulty * 0.8;
+            }
+        }
+
+        async function callIBMWatsonxAPI(paragraphDifficulty) {
+            const apiUrl = 'https://api.your-ibm-watsonx-endpoint';  // 替换为IBM Watsonx API端点
+            const apiKey = 'your_ibm_watsonx_api_key';  // 替换为你的API密钥
+
+            // 示例请求体，根据IBM Watsonx API文档调整
+            const requestBody = {
+                input: `Generate a paragraph with difficulty: ${paragraphDifficulty}`,  // 使用段落难度作为提示
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            const responseData = await response.json();
+            return responseData.generated_text;  // 假设API返回的生成文本字段为 generated_text
+        }
+    </script>
+</body>
+</html>
